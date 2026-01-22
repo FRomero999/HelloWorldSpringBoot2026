@@ -2,6 +2,8 @@ package org.example.helloworldspringboot2026;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -61,8 +63,18 @@ class MainController {
     }
 
     @GetMapping("/games/{id}")
-    public Game findById(@PathVariable int id) {
-        return gameRepository.findById(id).get();
+    public ResponseEntity<Game> findById(@PathVariable int id) {
+        var  game = gameRepository.findById(id);
+        //return ResponseEntity.ok(game);
+        //return new ResponseEntity<>(game, HttpStatus.FOUND);
+
+      /*  if(game.isPresent()) {
+            return ResponseEntity.ok(game.get());
+        }else{
+            return ResponseEntity.notFound().build();
+        }
+*/
+        return game.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping("/games")
