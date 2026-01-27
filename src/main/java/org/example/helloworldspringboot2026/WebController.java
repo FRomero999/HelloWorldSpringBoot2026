@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/")
 class WebController {
 
+    GameRepository gameRepository;
+    public WebController(GameRepository gameRepository) {
+        this.gameRepository = gameRepository;
+    }
+
     @GetMapping("/")
     public String index(Model model)
     {
@@ -22,6 +27,18 @@ class WebController {
         model.addAttribute("nombre", nombre);
         model.addAttribute("apellido", "anonimo");
         return "saludo";
+    }
+
+    @GetMapping("/juego/{id}")
+    public String juego(@PathVariable Integer id, Model model)
+    {
+        if(gameRepository.findById(id).isPresent()) {
+            model.addAttribute("game", gameRepository.findById(id).get());
+            return "juego";
+        } else {
+            model.addAttribute("error","No existe el juego "+id);
+            return "error";
+        }
     }
 
 
