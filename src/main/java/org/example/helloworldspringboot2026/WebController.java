@@ -18,6 +18,8 @@ class WebController {
     @GetMapping("/")
     public String index(Model model)
     {
+        model.addAttribute("games", gameRepository.findAll());
+        System.out.println( gameRepository.getPlatforms() );
         return "index";
     }
 
@@ -34,7 +36,7 @@ class WebController {
     {
         if(gameRepository.findById(id).isPresent()) {
             model.addAttribute("game", gameRepository.findById(id).get());
-            return "juego";
+            return "game";
         } else {
             model.addAttribute("error","No existe el juego "+id);
             return "error";
