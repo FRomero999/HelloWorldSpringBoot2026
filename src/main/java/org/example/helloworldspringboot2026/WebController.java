@@ -1,5 +1,6 @@
 package org.example.helloworldspringboot2026;
 
+import org.springframework.hateoas.server.core.AbstractEntityLinks;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,10 +14,9 @@ class WebController {
     private GameRepository gameRepository;
     private MainService mainService;
 
-    public WebController(
+    WebController(
             GameRepository gameRepository,
-            MainService mainService
-    ) {
+            MainService mainService) {
         this.gameRepository = gameRepository;
         this.mainService = mainService;
     }
@@ -25,8 +25,9 @@ class WebController {
     public String index(Model model)
     {
         model.addAttribute("games", gameRepository.findAll());
+        model.addAttribute("platforms",gameRepository.getPlatforms());
         /* Edita juego y guarda */
-        model.addAttribute("juego", gameRepository.findAll().get(0));
+        // model.addAttribute("juego", gameRepository.findAll().get(0));
         /* Crea uno nuevo */
         model.addAttribute("juego", new Game());
         return "index";
@@ -34,7 +35,10 @@ class WebController {
 
     /* Endpoint que recibe los datos del formulario */
     @PostMapping("/")
+//    public String crear(Model model, @RequestParam String title, @RequestParam String platform) {
     public String crear(Model model, @ModelAttribute Game newGame) {
+        //System.out.println(title);
+        //System.out.println(platform);
         System.out.println(newGame);
         mainService.saveGame(newGame);
         return "redirect:/";

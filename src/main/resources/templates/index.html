@@ -28,9 +28,7 @@
             <div>
                 <label for="inputPlataforma">Plataforma:</label>
                 <select id="inputPlataforma" th:field="*{platform}">
-                    <option value="PlayStation 4">PlayStation 4</option>
-                    <option value="PC">PC</option>
-                    <option value="Nintendo Switch">Nintendo Switch</option>
+                    <option th:each="p:${platforms}" th:value="${p}" th:text="${p}"></option>
                 </select>
             </div>
             <div>
