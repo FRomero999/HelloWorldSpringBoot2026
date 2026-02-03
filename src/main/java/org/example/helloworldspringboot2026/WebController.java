@@ -2,25 +2,42 @@ package org.example.helloworldspringboot2026;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 
 @Controller
 @RequestMapping("/")
 class WebController {
 
-    GameRepository gameRepository;
-    public WebController(GameRepository gameRepository) {
+    private GameRepository gameRepository;
+    private MainService mainService;
+
+    public WebController(
+            GameRepository gameRepository,
+            MainService mainService
+    ) {
         this.gameRepository = gameRepository;
+        this.mainService = mainService;
     }
 
     @GetMapping("/")
     public String index(Model model)
     {
         model.addAttribute("games", gameRepository.findAll());
-        System.out.println( gameRepository.getPlatforms() );
+        /* Edita juego y guarda */
+        model.addAttribute("juego", gameRepository.findAll().get(0));
+        /* Crea uno nuevo */
+        model.addAttribute("juego", new Game());
         return "index";
+    }
+
+    /* Endpoint que recibe los datos del formulario */
+    @PostMapping("/")
+    public String crear(Model model, @ModelAttribute Game newGame) {
+        System.out.println(newGame);
+        mainService.saveGame(newGame);
+        return "redirect:/";
     }
 
     @GetMapping("/{nombre}")

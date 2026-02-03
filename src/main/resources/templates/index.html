@@ -17,6 +17,26 @@
                 <a th:href="@{'/juego/'+${g.id}}" th:text="${g.title}"></a>
             </li>
         </ul>
+
+        <form th:action="@{/}" th:object="${juego}" method="post">
+            <h3>Nuevo juego</h3>
+            <input type="hidden" th:field="*{id}">
+            <div>
+                <label for="inputTitulo">Titulo:</label>
+                <input type="text" th:field="*{title}" id="inputTitulo">
+            </div>
+            <div>
+                <label for="inputPlataforma">Plataforma:</label>
+                <select id="inputPlataforma" th:field="*{platform}">
+                    <option value="PlayStation 4">PlayStation 4</option>
+                    <option value="PC">PC</option>
+                    <option value="Nintendo Switch">Nintendo Switch</option>
+                </select>
+            </div>
+            <div>
+                <button>Enviar</button>
+            </div>
+        </form>
     </main>
 </body>
 </html>
