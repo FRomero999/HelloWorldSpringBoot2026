@@ -1,5 +1,7 @@
 package org.example.helloworldspringboot2026;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -82,6 +84,19 @@ class MainController {
         return gameRepository.save(game);
     }
 
+    @GetMapping("/session")
+    public String session(HttpServletRequest request) {
+        String s = (String) request.getSession().getAttribute("valor");
+        System.out.println(s);
+        return s;
+    }
 
+    @PostMapping("/session")
+    public String writeToSession(@RequestParam String valor, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        session.setAttribute("logged", true);
+        session.setAttribute("user_id", id);
+        return "valor guardado";
+    }
 
 }
